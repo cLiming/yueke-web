@@ -3,6 +3,14 @@ import VueRouter from 'vue-router'
 import Main from '../views/Main.vue'
 import SaveTouringCar from '../views/SaveTouringCar.vue'
 import BuyTouringCar from '../views/BuyTouringCar.vue'
+import login from "../views/login.vue"
+import register from "../views/register.vue"
+import camp from "../views/camp.vue"
+import lookpword from "../views/lookpword.vue"
+import usercenter from "../views/usercenter.vue"
+import collection from "../views/collection.vue"
+import evaluate from "../views/evaluate.vue"
+import campDetail from "../views/campDetail.vue"
 Vue.use(VueRouter)
 const routes = [
   {
@@ -20,12 +28,65 @@ const routes = [
     name: 'BuyTouringCar',
     component: BuyTouringCar
   },
+  {
+  		path: "/login",
+  		name: "login",
+  		component: login
+      // path: '/about',
+      // name: 'About',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      // component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    },
+  {
+  		path: "/register",
+  		name: "register",
+  		component: register
+  },{
+    path: '/camp',
+    name: 'camp',
+    component: camp
+  },  {
+    path: '/campDetail/:id',
+    name: 'campDetail',
+    component: campDetail
+  },
+  {
+  		path: "/lookpword",
+  		name: "lookpword",
+  		component: lookpword
+  },
+  {
+  		path: "/usercenter",
+  		name: "usercenter",
+  		component: usercenter
+  },
+  {
+  		path: "/collection",
+  		name: "collection",
+  		component: collection
+  },
+  {
+  		path: "/evaluate",
+  		name: "evaluate",
+  		component: evaluate
+  },
 ]
 
 const router = new VueRouter({
   routes,
   mode: 'history',
+  // {
+  //   path: '/about',
+  //   name: 'About',
+  //   // route level code-splitting
+  //   // this generates a separate chunk (about.[hash].js) for this route
+  //   // which is lazy-loaded when the route is visited.
+  //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+  // }
 })
+
 /*router.beforeEach((to, from, next) => {
 	const nextRoute = ['SaveTouringCar'] // 需要登录的页面
 	  let isLogin = sessionStorage.getItem("token") // 判断是否登录，本地存储有用户数据则视为已经登录
