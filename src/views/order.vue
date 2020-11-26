@@ -1,75 +1,229 @@
 <template>
 	<div>
-		<el-form ref="form" :model="form" label-width="80px">
-		  <el-form-item label="商品名称">
-		    <el-input v-model="form.name"></el-input>
-		  </el-form-item>
-		  <el-form-item label="活动区域">
-		    <el-select v-model="form.region" placeholder="请选择活动区域">
-		      <el-option label="区域一" value="shanghai"></el-option>
-		      <el-option label="区域二" value="beijing"></el-option>
-		    </el-select>
-		  </el-form-item>
-		  <el-form-item label="活动时间">
-		    <el-col :span="7">
-		      <el-date-picker type="date" placeholder="开始日期" v-model="form.date1" style="width: 100%;"></el-date-picker>
-		    </el-col>
+		<h1>我的订单</h1>
+		<el-tabs  v-model="activeName" @tab-click="handleClick">
+		    <el-tab-pane  label="全部订单" name="first">
+				<template>
+				  <el-table
+					:data="list1"
+				    style="width:75%">
+				    <el-table-column
+				      label="图片"
+				      width="200">
+					  <template scope="scope">
+					    <img :src="scope.row.image" width="100" height="100" class="head_pic"/>
+					  </template>
+				    </el-table-column>
+				    <el-table-column
+				      prop="orderTime"
+				      label="下单时间"
+				      width="200">
+				    </el-table-column>
+					<el-table-column
+					  prop="totals"
+					  label="购买数量"
+					   width="200">
+					</el-table-column>
+				    <el-table-column
+				      prop="id"
+				      label="订单id"
+					   width="200">
+				    </el-table-column>
+					<el-table-column
+					 label="操作">
+					   <template slot-scope="scope">
+					           <el-button
+					             size="mini"
+					             @click="handleEdit(scope.row)">查看</el-button>
+					           <el-button
+					             size="mini"
+					             type="danger"
+					             @click="handleDelete( scope.row.id)">移除</el-button>
+					         </template>
+							 <!-- <el-button type="primary" @click="look">查看</el-button>
+							 <el-button type="primary" @click="delet(id)">删除</el-button> -->
+					</el-table-column>
+				  </el-table>
+				</template>
+			</el-tab-pane>
+		    <el-tab-pane label="待支付" name="second">
+				<template>
+				  <el-table
+					:data="list2"
+				    style="width:75%">
+				    <el-table-column
+				      label="图片"
+				      width="200">
+					  <template scope="scope">
+					    <img :src="scope.row.image" width="100" height="100" class="head_pic"/>
+					  </template>
+				    </el-table-column>
+				    <el-table-column
+				      prop="orderTime"
+				      label="下单时间"
+				      width="200">
+				    </el-table-column>
+					<el-table-column
+					  prop="totals"
+					  label="购买数量"
+					   width="200">
+					</el-table-column>
+				    <el-table-column
+				      prop="id"
+				      label="订单id"
+					   width="200">
+				    </el-table-column>
+					<el-table-column
+					 label="操作">
+					   <template slot-scope="scope">
+					           <el-button
+					             size="mini"
+					             @click="handleEdit(scope.row)">查看</el-button>
+					           <el-button
+					             size="mini"
+					             type="danger"
+					             @click="handleDelete( scope.row.sid)">移除</el-button>
+					         </template>
+							 <!-- <el-button type="primary" @click="look">查看</el-button>
+							 <el-button type="primary" @click="delet(id)">删除</el-button> -->
+					</el-table-column>
+				  </el-table>
+				</template>
+			</el-tab-pane>
+		    <el-tab-pane label="已完成" name="third">
+			<template>
+				  <el-table
+					:data="list3"
+				    style="width:75%">
+				    <el-table-column
+				      label="图片"
+				      width="200">
+					  <template scope="scope">
+					    <img :src="scope.row.image" width="100" height="100" class="head_pic"/>
+					  </template>
+				    </el-table-column>
+				    <el-table-column
+				      prop="orderTime"
+				      label="下单时间"
+				      width="200">
+				    </el-table-column>
+					<el-table-column
+					  prop="totals"
+					  label="购买数量"
+					   width="200">
+					</el-table-column>
+				    <el-table-column
+				      prop="id"
+				      label="订单id"
+					   width="200">
+				    </el-table-column>
+					<el-table-column
+					 label="操作">
+					   <template slot-scope="scope">
+					           <el-button
+					             size="mini"
+					             @click="handleEdit(scope.row)">查看</el-button>
+					           <el-button
+					             size="mini"
+					             type="danger"
+					             @click="handleDelete( scope.row.sid)">移除</el-button>
+					         </template>
+							 <!-- <el-button type="primary" @click="look">查看</el-button>
+							 <el-button type="primary" @click="delet(id)">删除</el-button> -->
+					</el-table-column>
+				  </el-table>
+				</template>
 			
-		    <el-col :span="7">
-		    <el-date-picker type="date" placeholder="结束日期" v-model="form.date2" style="width: 100%;"></el-date-picker>
-		    </el-col>
-		  </el-form-item>
-		  <el-form-item label="即时配送">
-		    <el-switch v-model="form.delivery"></el-switch>
-		  </el-form-item>
-		  <el-form-item label="活动性质">
-		    <el-checkbox-group v-model="form.type">
-		      <el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>
-		      <el-checkbox label="地推活动" name="type"></el-checkbox>
-		      <el-checkbox label="线下主题活动" name="type"></el-checkbox>
-		      <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
-		    </el-checkbox-group>
-		  </el-form-item>
-		  <el-form-item label="特殊资源">
-		    <el-radio-group v-model="form.resource">
-		      <el-radio label="线上品牌商赞助"></el-radio>
-		      <el-radio label="线下场地免费"></el-radio>
-		    </el-radio-group>
-		  </el-form-item>
-		  <el-form-item label="活动形式">
-		    <el-input type="textarea" v-model="form.desc"></el-input>
-		  </el-form-item>
-		  <el-form-item>
-		    <el-button type="primary" @click="onSubmit">立即创建</el-button>
-		    <el-button>取消</el-button>
-		  </el-form-item>
-		</el-form>
-		
+			</el-tab-pane>
+		  </el-tabs>
+
 	</div>
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        form: {
-          name: '',
-          region: '',
-          date1: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          desc: ''
-        }
-      }
-    },
-    methods: {
-      onSubmit() {
-        console.log('submit!');
-      }
-    }
-  }
+import $ from "jquery";
+	export default {
+	    data() {
+	      return {
+	        activeName: 'first',
+			list1:[],
+			list2:[],
+			list3:[],
+	      };
+	    },
+		created:function(){
+			this.token =  localStorage.getItem('token');
+			this.selectorder();
+			this.selectorder1();
+			this.selectorder2();
+			
+			
+		},
+	    methods: {
+	      handleClick(tab,event) {
+			 
+	         console.log(tab, event);
+	      },
+	    
+		selectorder:function(){
+			var othis = this
+			
+			$.ajax({
+				url:"http://192.168.10.24:10001/order/selectOrder",
+				type:"get",
+				headers:{
+					'X-Token':this.token,
+				},
+				success:function(data){
+					if(data.code=="200"){
+						
+						othis.list1=data.list
+					}
+				}
+			})
+		},
+		selectorder1:function(){
+			var othis = this
+			
+			$.ajax({
+				url:"http://192.168.10.24:10001/order/selectOrder",
+				data:{status:0},
+				type:"get",
+				headers:{
+					'X-Token':this.token,
+				},
+				success:function(data){
+					if(data.code=="200"){
+						
+						othis.list2=data.list
+					}
+				}
+			})
+		},
+		selectorder2:function(){
+			var othis = this
+			
+			$.ajax({
+				url:"http://192.168.10.24:10001/order/selectOrder",
+				data:{status:2},
+				type:"get",
+				headers:{
+					'X-Token':this.token,
+				},
+				success:function(data){
+					if(data.code=="200"){
+						
+						othis.list3=data.list
+					}
+				}
+			})
+		},
+		},
+		
+		
+	  };
+
+
 </script>
 
 <style>
